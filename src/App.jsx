@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './components/MainPage'; // MainPage Component
-import LoginPage from './components/LoginPage'; // User Login Page Component
-import AdminLoginPage from './components/AdminLoginPage'; // Admin Login Page Component
-import DashboardPage from './components/Dashboard'; // Dashboard Page Component
-import AdminDashboardPage from './components/AdminDashboard'; // Admin Dashboard Page Component
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute Component
+import MainPage from './components/MainPage';  // MainPage Component
+import LoginPage from './components/LoginPage';  // User Login Page Component
+import AdminLoginPage from './components/AdminLoginPage';  // Admin Login Page Component
+import DashboardPage from './components/Dashboard';  // Dashboard Page Component
+import AdminDashboardPage from './components/AdminDashboard';  // Admin Dashboard Page Component
+import PrivateRoute from './components/PrivateRoute';  // Import PrivateRoute Component
 
 const App = () => {
   return (
-    <Router basename="/Narcware-Login"> {/* Set the basename */}
+    <Router basename="/Narcware-Login"> {/* Set the basename in App.jsx */}
       <Routes>
         <Route path="/" element={<MainPage />} /> {/* MainPage is the default route */}
         <Route path="/login" element={<LoginPage />} /> {/* User Login Page */}
