@@ -9,7 +9,7 @@ import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute Com
 
 const App = () => {
   return (
-    <Router>
+    <Router basename="/Narcware-Login"> {/* Set the basename */}
       <Routes>
         <Route path="/" element={<MainPage />} /> {/* MainPage is the default route */}
         <Route path="/login" element={<LoginPage />} /> {/* User Login Page */}
