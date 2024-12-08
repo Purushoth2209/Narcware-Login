@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './components/MainPage';  // MainPage Component
-import LoginPage from './components/LoginPage';  // User Login Page Component
-import AdminLoginPage from './components/AdminLoginPage';  // Admin Login Page Component
-import DashboardPage from './components/Dashboard';  // Dashboard Page Component
-import AdminDashboardPage from './components/AdminDashboard';  // Admin Dashboard Page Component
-import PrivateRoute from './components/PrivateRoute';  // Import PrivateRoute Component
+import MainPage from './components/MainPage'; // MainPage Component
+import LoginPage from './components/LoginPage'; // User Login Page Component
+import AdminLoginPage from './components/AdminLoginPage'; // Admin Login Page Component
+import DashboardPage from './components/Dashboard'; // Dashboard Page Component
+import AdminDashboardPage from './components/AdminDashboard'; // Admin Dashboard Page Component
+import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute Component
 
 const App = () => {
   return (
