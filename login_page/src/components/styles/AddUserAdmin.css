@@ -1,0 +1,109 @@
+/* styles/AddUserAdmin.css */
+
+/* Container for the form overlay */
+.form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+}
+
+/* Form container */
+.add-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 90%;
+  overflow-y: auto;
+}
+
+/* Form Title */
+.add-form h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Input field container */
+.add-form div {
+  margin-bottom: 15px;
+}
+
+/* Label styling */
+.add-form label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Input fields styling */
+.add-form input[type="text"],
+.add-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Buttons container styling */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Submit button styling */
+.submit-button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+/* Cancel button styling */
+.cancel-button {
+  background-color: #f44336;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #e53935;
+}
+
+/* Optional: Styling for input focus */
+.add-form input[type="text"]:focus,
+.add-form input[type="password"]:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+/* Optional: Prevent form overflow */
+.add-form {
+  max-height: 80vh;
+  overflow-y: auto;
+}

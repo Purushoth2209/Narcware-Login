@@ -1,0 +1,76 @@
+.main-page {
+  font-family: Arial, sans-serif;
+  background-color: #FFF9E6; /* Light yellowish background */
+  color: #6E6E6E;
+  padding: 20px;
+  min-height: 100vh; /* Flexible vertical height */
+  max-width: 100%;
+  overflow-y: auto; /* Allows vertical scrolling */
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+}
+
+.main-page * {
+  box-sizing: border-box;
+}
+
+.main-page .main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #004D91;
+  padding-bottom: 20px;
+  position: relative;
+  max-width: 100%;
+}
+
+.main-page .app-title {
+  font-size: 2rem;
+  color: #004D91;
+  text-align: center;
+  width: 100%;
+}
+
+.main-page .login-links {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.main-page .login-link {
+  font-size: 1rem;
+  color: #004D91;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.main-page .login-link:hover {
+  color: #F4B400;
+}
+
+.main-page .main-content {
+  margin-top: 20px;
+}
+
+.main-page .app-description {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.main-page .app-features h2 {
+  font-size: 1.5rem;
+  color: #004D91;
+  margin-bottom: 10px;
+}
+
+.main-page .app-features ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.main-page .app-features li {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}

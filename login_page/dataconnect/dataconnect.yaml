@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "login_page"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "login_page-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
