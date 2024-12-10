@@ -38,7 +38,7 @@ const AdminDashboard = () => {
 
       {/* Logout Button */}
       <div className="logout-container">
-        <button onClick={handleLogout} className="logout-button">
+        <button onClick={handleLogout} className="ad-logout-button">
           Logout
         </button>
       </div>

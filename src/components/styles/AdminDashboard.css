@@ -84,7 +84,7 @@
   margin: 20px;
 }
 
-.logout-button {
+.ad-logout-button {
   background-color: #D89C00;
   color: white;
   padding: 10px 20px;
@@ -94,6 +94,7 @@
   cursor: pointer;
   font-size: 16px;
   margin-top: 60px;
+  margin-right: 0;
 }
 
 .logout-button:hover {
