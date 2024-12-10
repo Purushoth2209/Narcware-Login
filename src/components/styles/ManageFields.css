@@ -78,3 +78,8 @@
   border-color: #4CAF50;
   outline: none;
 }
+
+.field-button.close {
+  background-color: #ccc;
+  color: #000;
+}

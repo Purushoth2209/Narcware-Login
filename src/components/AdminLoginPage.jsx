@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase'; // Import Firebase auth instance
 import { signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'; // Import Firestore functions
 import './styles/AdminLoginPage.css'; // Import the CSS file
 
 const AdminLoginPage = () => {
@@ -12,12 +13,13 @@ const AdminLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state for login process
   const [isPageLoading, setIsPageLoading] = useState(true); // Loading state for the page spinner
   const navigate = useNavigate(); // Initialize useNavigate
+  const db = getFirestore(); // Initialize Firestore database
 
   // Simulate a 2-second delay for the page loading spinner
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsPageLoading(false); // After 2 seconds, hide the spinner and show the login form
-    }, 1000); // 1000ms = 1 seconds
+    }, 1000); // 1000ms = 1 second
     return () => clearTimeout(timer); // Clear the timer on component unmount
   }, []);
 
@@ -44,7 +46,7 @@ const AdminLoginPage = () => {
       await sendPasswordResetEmail(auth, email);
       setErrorMessage("Password reset email sent. Check your inbox.");
     } catch (error) {
-      setErrorMessage("Error sending password reset email. Please try again.");
+      setErrorMessage("Error sending password reset email. Please try again."+error );
     }
   };
 
@@ -60,22 +62,37 @@ const AdminLoginPage = () => {
       setErrorMessage('Please enter a valid email address.');
       return false;
     }
-    
+
     return true;
   };
 
-  
+  // Function to check if email exists in Firestore admins collection
+  const checkIfEmailExistsInAdmins = async (email) => {
+    const adminsRef = collection(db, 'admins');
+    const q = query(adminsRef, where('email', '==', email)); // Query to check if email exists
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty; // Return true if email exists, otherwise false
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setIsLoading(true); // Show loading during login
-  
+
     // Validate form
     if (!validateForm()) {
       setIsLoading(false);
       return;
     }
-  
+
+    // Check if the email exists in Firestore admins collection
+    const emailExists = await checkIfEmailExistsInAdmins(email);
+    if (!emailExists) {
+      setErrorMessage('This email is not associated with an admin account.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       // Firebase authentication
       await signInWithEmailAndPassword(auth, email, password);
@@ -85,7 +102,7 @@ const AdminLoginPage = () => {
       navigate('/admin-dashboard');  // Updated to navigate to /admin-dashboard    
     } catch (error) {
       console.error('Error logging in:', error);
-  
+
       // Handling Firebase Authentication error responses
       if (error.code === 'auth/invalid-email') {
         setErrorMessage('The email address is not valid.');
@@ -100,7 +117,6 @@ const AdminLoginPage = () => {
       setIsLoading(false);
     }
   };
-  
 
   if (isPageLoading) {
     return (

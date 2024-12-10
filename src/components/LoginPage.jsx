@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase'; // Import Firebase auth instance
 import { signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Import Firestore methods
 import './styles/LoginPage.css'; // Import the CSS file
 
 const LoginPage = () => {
@@ -12,13 +13,13 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state for login process
   const navigate = useNavigate(); // Initialize useNavigate
   const [isPageLoading, setIsPageLoading] = useState(true); // Loading state for the page spinner
+  const db = getFirestore(); // Initialize Firestore
 
-
-   // Simulate a 2-second delay for the page loading spinner
-   useEffect(() => {
+  // Simulate a 2-second delay for the page loading spinner
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsPageLoading(false); // After 2 seconds, hide the spinner and show the login form
-    }, 1000); // 1000ms = 1 seconds
+    }, 1000); // 1000ms = 1 second
     return () => clearTimeout(timer); // Clear the timer on component unmount
   }, []);
 
@@ -46,7 +47,7 @@ const LoginPage = () => {
       await sendPasswordResetEmail(auth, email);
       setErrorMessage("Password reset email sent. Check your inbox.");
     } catch (error) {
-      setErrorMessage("Error sending password reset email. Please try again.");
+      setErrorMessage("Error sending password reset email. Please try again."+error);
     }
   };
 
@@ -62,11 +63,23 @@ const LoginPage = () => {
       setErrorMessage('Please enter a valid email address.');
       return false;
     }
-    
+
     return true;
   };
 
-  
+  // Check if email exists in Firestore
+  const checkEmailInFirestore = async (email) => {
+    try {
+      const usersRef = collection(db, 'users'); // Access the 'users' collection
+      const q = query(usersRef, where('email', '==', email)); // Query for the email field
+      const querySnapshot = await getDocs(q); // Get documents matching the query
+      return !querySnapshot.empty; // Return true if the email exists, false otherwise
+    } catch (error) {
+      console.error('Error checking email in Firestore: ', error.message);
+      setErrorMessage('Error checking email. Please try again later.');
+      return false;
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -75,7 +88,15 @@ const LoginPage = () => {
 
     // Validate form
     if (!validateForm()) {
-      setIsLoading(true);
+      setIsLoading(false);
+      return;
+    }
+
+    // Check if email exists in Firestore
+    const emailExists = await checkEmailInFirestore(email);
+    if (!emailExists) {
+      setErrorMessage('Email not found in our system. Please check your email.');
+      setIsLoading(false);
       return;
     }
 
@@ -83,7 +104,7 @@ const LoginPage = () => {
       // Firebase authentication
       await signInWithEmailAndPassword(auth, email, password);
       console.log('User logged in successfully');
-      
+
       // Redirect to Narcware Dashboard after successful login
       navigate('/dashboard');
     } catch (error) {
@@ -103,14 +124,13 @@ const LoginPage = () => {
     );
   }
 
-
   return (
     <div className="user-login-page-container">
       <header className="user-login-header">
         <h1 className="header-title">Welcome to NARCWARE</h1>
         <p className="header-subtitle">Login to access NARCWARE</p>
       </header>
-      
+
       <div className="user-login-box">
         <h1 className="user-login-title">Login</h1>
         <form onSubmit={handleLogin}>
@@ -150,15 +170,15 @@ const LoginPage = () => {
             {isLoading ? 'Logging In...' : 'Login'}
           </button>
         </form>
-        
+
         {/* Show error message if login fails */}
         {errorMessage && <div className="error-message">{errorMessage}</div>}
-         {/* Show loading spinner */}
-         {isLoading && <div className="form-loading-spinner"></div>}
-        
+        {/* Show loading spinner */}
+        {isLoading && <div className="form-loading-spinner"></div>}
+
         {/* Forgot password link */}
         <div className="forgot-password-link">
-        <span className="user-login-forgotPassword" onClick={handleForgotPassword}>Forgot Password?</span>
+          <span className="user-login-forgotPassword" onClick={handleForgotPassword}>Forgot Password?</span>
         </div>
       </div>
     </div>

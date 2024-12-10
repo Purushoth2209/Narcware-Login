@@ -1,52 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes
-import { auth } from '../firebase'; // Import Firebase auth instance
+import PropTypes from 'prop-types';
+import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const PrivateRoute = ({ children }) => {
-  const [loading, setLoading] = useState(true); // To manage loading state
+  const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [error, setError] = useState(null); // To manage error state
+  const [error, setError] = useState(null);
 
-  // To get the current location (the page the user is trying to access)
   const location = useLocation();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsAuthenticated(true); // User is authenticated
-      } else {
-        setIsAuthenticated(false); // User is not authenticated
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        if (user) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+        setLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setLoading(false);
       }
-      setLoading(false); // Once the auth state is determined, stop loading
-    }, (err) => {
-      setError(err.message); // Handle errors from Firebase authentication
-      setLoading(false);
-    });
+    );
 
-    return () => unsubscribe(); // Clean up listener on unmount
+    return () => unsubscribe();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading state while checking auth
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Show error message if there's an issue
+    return <div>Error: {error}</div>;
   }
 
   if (!isAuthenticated) {
-    // If not authenticated, redirect to login page with the attempted URL
-    return <Navigate to="/login" state={{ from: location }} />;
+    // Clear any sensitive history when not authenticated
+    window.history.replaceState(null, '', location.pathname);
+
+    if (location.pathname.startsWith('/admin-dashboard')) {
+      return <Navigate to="/admin-login" state={{ from: location }} replace />;
+    }
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  return children; // If authenticated, allow the protected route to render
+  return children;
 };
 
-// PropTypes validation for the PrivateRoute component
 PrivateRoute.propTypes = {
-  children: PropTypes.node.isRequired, // Ensure children is passed and is a valid React node
+  children: PropTypes.node.isRequired,
 };
 
 export default PrivateRoute;

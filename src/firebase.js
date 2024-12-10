@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -13,9 +13,13 @@ const firebaseConfig = {
   measurementId: "G-0DQSXZ0D0S",
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);  // Get Firebase Auth instance
-const db = getFirestore(app);  // Get Firestore instance
+// Initialize Firebase
+initializeApp(firebaseConfig);
+
+const auth = getAuth();  // Get Firebase Auth instance
+const db = getFirestore();  // Get Firestore instance
+
+// Set persistence for Firebase Auth
 setPersistence(auth, browserLocalPersistence)
   .then(() => {
     // Persistence is set, no further action needed.

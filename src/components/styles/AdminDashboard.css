@@ -1,3 +1,17 @@
+.admin-dashboard-header{
+  background-color: #004D91; /* Background color for the header */
+    color: white; /* Text color */
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10; /* Ensure header stays on top */
+}
+
 /* Dashboard Container */
 .dashboard-container {
   background-color: #FFF9EE;
@@ -6,10 +20,6 @@
 }
 
 /* Title Styling */
-.dashboard-title {
-  color: #004D91;
-  text-align: center;
-}
 
 /* Button Group */
 .button-group {
@@ -17,11 +27,12 @@
   justify-content: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  margin-top: 50px;
 }
 
 /* Primary Button */
 .primary-button {
-  background-color: #4CAF50;
+  background-color: #004D91;
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -30,28 +41,24 @@
   font-size: 1rem;
 }
 
-.primary-button:hover {
-  background-color: #45a049;
+.primary-button:hover{
+  opacity: 0.8;
 }
 
-/* Form Container */
-.form-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.primary-button:hover {
+  background-color: #004D91;
 }
+
+
 
 /* Form Overlay */
 .form-overlay {
-  background-color: #FFFFFF;
-  padding: 1.5rem;
-  border: 1px solid #DDD;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  max-width: 90%;
-  margin-bottom: 1.5rem;
+  position: fixed;
+  inset: 0px;
+  max-width: 400px;
+  max-height: 800px;
+  margin: auto;
+  background: transparent;
 }
 
 /* Submit Button */
@@ -68,3 +75,28 @@
 .submit-button:hover {
   background-color: #D89C00;
 }
+
+/* AdminDashboard.css */
+
+.logout-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
+}
+
+.logout-button {
+  background-color: #D89C00;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-color: #D89C00;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 60px;
+}
+
+.logout-button:hover {
+  background-color: #a07403;
+}
+  

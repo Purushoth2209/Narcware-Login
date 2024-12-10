@@ -85,7 +85,6 @@ const ManageFields = ({ closeForm }) => {
 
       setFieldName('');
       setErrorMessage('');
-      closeForm(); // Close the form after deleting the field
     } catch (error) {
       console.error('Error deleting field: ', error);
       setErrorMessage('Error deleting field from Firestore');
@@ -114,6 +113,7 @@ const ManageFields = ({ closeForm }) => {
 
       <button onClick={handleAddField} className="field-button">Add Field</button>
       <button onClick={handleDeleteField} className="field-button delete">Delete Field</button>
+      <button onClick={closeForm} className="field-button close">Close</button> {/* New Close Button */}
     </div>
   );
 };
