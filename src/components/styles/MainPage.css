@@ -17,7 +17,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #004D91;
+  border-bottom: 2px solid #242437;
   padding-bottom: 20px;
   position: relative;
   max-width: 100%;
@@ -25,7 +25,7 @@
 
 .main-page .app-title {
   font-size: 2rem;
-  color: #004D91;
+  color: #242437;
   text-align: center;
   width: 100%;
 }
@@ -40,7 +40,7 @@
 
 .main-page .login-link {
   font-size: 1rem;
-  color: #004D91;
+  color: #242437;
   cursor: pointer;
   text-decoration: none;
   transition: color 0.3s;
@@ -61,7 +61,7 @@
 
 .main-page .app-features h2 {
   font-size: 1.5rem;
-  color: #004D91;
+  color: #242437;
   margin-bottom: 10px;
 }
 

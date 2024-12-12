@@ -50,9 +50,6 @@ const AdminDashboard = () => {
         <button onClick={() => handleButtonClick('admin')} className="primary-button">
           {formType === 'admin' ? 'Close Add Admin' : 'Add Admin'}
         </button>
-        <button onClick={() => handleButtonClick('manageFields')} className="primary-button">
-          {formType === 'manageFields' ? 'Close Manage Fields' : 'Manage Fields'}
-        </button>
       </div>
 
       {/* Conditionally render the respective forms */}
@@ -65,12 +62,6 @@ const AdminDashboard = () => {
       {formType === 'admin' && (
         <div className="form-overlay">
           <AddUserAdmin formType="admin" closeForm={closeForm} />
-        </div>
-      )}
-
-      {formType === 'manageFields' && (
-        <div className="form-overlay">
-          <ManageFields closeForm={closeForm} />
         </div>
       )}
 

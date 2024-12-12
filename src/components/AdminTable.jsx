@@ -5,7 +5,7 @@ import { FaEllipsisV, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import './styles/Table.css';
 
-const Table = ({ collectionName }) => {
+const Table = ({ collectionName='admin' }) => {
   const [data, setData] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [columns, setColumns] = useState([]);

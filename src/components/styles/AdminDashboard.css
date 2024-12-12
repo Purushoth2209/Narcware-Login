@@ -1,5 +1,5 @@
 .admin-dashboard-header{
-  background-color: #004D91; /* Background color for the header */
+  background-color: #242437; /* Background color for the header */
     color: white; /* Text color */
     padding: 10px;
     text-align: center;
@@ -32,7 +32,7 @@
 
 /* Primary Button */
 .primary-button {
-  background-color: #004D91;
+  background-color: #242437;
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -46,7 +46,7 @@
 }
 
 .primary-button:hover {
-  background-color: #004D91;
+  background-color: #242437;
 }
 
 
@@ -85,7 +85,7 @@
 }
 
 .ad-logout-button {
-  background-color: #D89C00;
+  background-color: #e26664;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -98,6 +98,6 @@
 }
 
 .logout-button:hover {
-  background-color: #a07403;
+  background-color: #000000 ;
 }
   

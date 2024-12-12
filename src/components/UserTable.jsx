@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { collection, onSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, deleteDoc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { FaEllipsisV, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import './styles/Table.css';
 
-const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionName to 'user'
+const Table = ({ collectionName, refreshData }) => {
   const [data, setData] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [columns, setColumns] = useState([]);
@@ -13,52 +13,66 @@ const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionN
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
 
-  const normalizeColumns = (data) => {
-    return data.map((item) => {
-      if (item.phone_number) {
-        item.phone = item.phone_number;
-        delete item.phone_number;
-      }
-      return item;
-    });
-  };
-
+  // Fetch data and column order from Firestore
   useEffect(() => {
-    const fetchData = () => {
-      const colRef = collection(db, collectionName); // Use the collectionName prop
+    const fetchData = async () => {
+      const colRef = collection(db, collectionName);
 
-      const unsubscribe = onSnapshot(colRef, (snapshot) => {
+      const unsubscribe = onSnapshot(colRef, async (snapshot) => {
         const fetchedData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        const normalizedData = normalizeColumns(fetchedData);
-        setData(normalizedData);
-        setFilteredData(normalizedData);
+        setData(fetchedData);
+        setFilteredData(fetchedData);
 
         const allColumns = new Set();
-        normalizedData.forEach((doc) => {
+        fetchedData.forEach((doc) => {
           Object.keys(doc).forEach((key) => {
             if (key !== 'id') {
-              const normalizedKey = key.toLowerCase().replace(/_/g, '');
-              allColumns.add(normalizedKey);
+              allColumns.add(key);
             }
           });
         });
 
         const columnsArray = [...allColumns];
-        const savedColumnOrder = JSON.parse(localStorage.getItem('columnOrder'));
-
-        if (savedColumnOrder) {
-          setColumns(savedColumnOrder.filter((col) => col !== 'id'));
-        } else {
-          setColumns(columnsArray);
-        }
+        await loadColumnOrder(columnsArray);
       });
 
       return unsubscribe;
     };
 
     fetchData();
-  }, [collectionName]); // Dependency array updated
+  }, [collectionName, refreshData]);
 
+  // Load column order from Firestore
+  const loadColumnOrder = async (defaultColumns) => {
+    const settingsRef = doc(db, 'columnOrders', collectionName);
+
+    try {
+      const docSnap = await getDoc(settingsRef);
+      if (docSnap.exists()) {
+        const { columns: savedColumns } = docSnap.data();
+        setColumns(savedColumns.filter((col) => defaultColumns.includes(col)));
+      } else {
+        setColumns(defaultColumns);
+      }
+    } catch (error) {
+      console.error('Error loading column order from Firestore:', error);
+      setColumns(defaultColumns);
+    }
+  };
+
+  // Save column order to Firestore
+  const saveColumnOrderToFirestore = async (newColumns) => {
+    const settingsRef = doc(db, 'columnOrders', collectionName);
+
+    try {
+      await setDoc(settingsRef, { columns: newColumns }, { merge: true });
+      console.log('Column order saved to Firestore');
+    } catch (error) {
+      console.error('Error saving column order to Firestore:', error);
+    }
+  };
+
+  // Handle search input change
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -75,7 +89,7 @@ const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionN
   };
 
   const handleSave = async (id, updatedValues) => {
-    const docRef = doc(db, collectionName, id); // Use the collectionName prop
+    const docRef = doc(db, collectionName, id);
     await updateDoc(docRef, updatedValues);
     setEditIndex(null);
   };
@@ -83,7 +97,7 @@ const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionN
   const handleDelete = async (id) => {
     const confirmation = window.confirm('Are you sure you want to delete this record?');
     if (confirmation) {
-      await deleteDoc(doc(db, collectionName, id)); // Use the collectionName prop
+      await deleteDoc(doc(db, collectionName, id));
     }
   };
 
@@ -94,7 +108,9 @@ const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionN
     const newColumns = [...columns];
     [newColumns[index], newColumns[newIndex]] = [newColumns[newIndex], newColumns[index]];
     setColumns(newColumns);
-    localStorage.setItem('columnOrder', JSON.stringify(newColumns));
+
+    // Save the new order to Firestore
+    saveColumnOrderToFirestore(newColumns);
   };
 
   const handleKeyPress = (e, id, updatedValues) => {
@@ -105,7 +121,7 @@ const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionN
 
   return (
     <div className="table-container">
-      <h2 className="table-title">User Data</h2>
+      <h2 className="table-title">{collectionName.charAt(0).toUpperCase() + collectionName.slice(1)} Table</h2>
 
       <div className="table-controls">
         <input
@@ -180,8 +196,9 @@ const UserTable = ({ collectionName = 'user' }) => {  // Set default collectionN
   );
 };
 
-UserTable.propTypes = {
-  collectionName: PropTypes.string,
+Table.propTypes = {
+  collectionName: PropTypes.string.isRequired,
+  refreshData: PropTypes.bool.isRequired,
 };
 
-export default UserTable;
+export default Table;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './components/MainPage'; // MainPage Component
 import LoginPage from './components/LoginPage'; // User Login Page Component

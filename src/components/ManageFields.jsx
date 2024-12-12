@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { db } from '../firebase';  // Import Firestore instance from firebase.js
-import { collection, getDocs, updateDoc, doc, deleteField } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import PropTypes from 'prop-types';  // Import PropTypes for prop validation
 import './styles/ManageFields.css';
 
@@ -18,22 +18,28 @@ const ManageFields = ({ closeForm }) => {
 
     try {
       const collectionRef = tableType === 'users' ? 'users' : 'admins';  // Determine the collection
-      const querySnapshot = await getDocs(collection(db, collectionRef));  // Get all documents in the collection
+
+      // Get reference to the collection
+      const collectionRefDoc = collection(db, collectionRef);
+      
+      // Fetch all documents in the collection
+      const querySnapshot = await getDocs(collectionRefDoc);
 
       if (querySnapshot.empty) {
         setErrorMessage(`No documents found in the ${tableType} collection`);
         return;
       }
 
-      // Loop through each document and add the new field
-      querySnapshot.forEach(async (docSnap) => {
+      // Create an array of promises for updating all documents
+      const updatePromises = querySnapshot.docs.map((docSnap) => {
         const docRef = doc(db, collectionRef, docSnap.id);  // Get reference to each document
-
-        // Add the new field to the document using the field name provided by the user
-        await updateDoc(docRef, {
-          [fieldName]: "",  // Add the field with an empty value (or a default value)
+        return updateDoc(docRef, {
+          [fieldName]: "",  // Add the field with an empty value
         });
       });
+
+      // Wait for all updates to finish
+      await Promise.all(updatePromises);
 
       alert(`Field "${fieldName}" added to all documents in the ${tableType} table`);
       setFieldName('');
@@ -54,35 +60,36 @@ const ManageFields = ({ closeForm }) => {
 
     try {
       const collectionRef = tableType === 'users' ? 'users' : 'admins';  // Determine the collection
-      const querySnapshot = await getDocs(collection(db, collectionRef));  // Get all documents in the collection
+
+      // Get reference to the collection
+      const collectionRefDoc = collection(db, collectionRef);
+
+      // Fetch all documents in the collection
+      const querySnapshot = await getDocs(collectionRefDoc);
 
       if (querySnapshot.empty) {
         setErrorMessage(`No documents found in the ${tableType} collection`);
         return;
       }
 
-      let fieldExists = false;
-      // Loop through each document and delete the field if it exists
-      querySnapshot.forEach(async (docSnap) => {
+      // Create an array of promises for deleting the field
+      const deletePromises = querySnapshot.docs.map(async (docSnap) => {
         const docRef = doc(db, collectionRef, docSnap.id);  // Get reference to each document
         const docData = docSnap.data();
 
         // Check if the field exists in the document data
         if (fieldName in docData) {
-          fieldExists = true;
           // Delete the field from the document
           await updateDoc(docRef, {
-            [fieldName]: deleteField(),
+            [fieldName]: null, // Delete the field
           });
         }
       });
 
-      if (fieldExists) {
-        alert(`Field "${fieldName}" deleted from all documents in the ${tableType} table`);
-      } else {
-        setErrorMessage(`Field "${fieldName}" does not exist in any documents of ${tableType}`);
-      }
+      // Wait for all deletions to finish
+      await Promise.all(deletePromises);
 
+      alert(`Field "${fieldName}" deleted from all documents in the ${tableType} table`);
       setFieldName('');
       setErrorMessage('');
     } catch (error) {
@@ -113,7 +120,7 @@ const ManageFields = ({ closeForm }) => {
 
       <button onClick={handleAddField} className="field-button">Add Field</button>
       <button onClick={handleDeleteField} className="field-button delete">Delete Field</button>
-      <button onClick={closeForm} className="field-button close">Close</button> {/* New Close Button */}
+      <button onClick={closeForm} className="field-button close">Close</button> {/* Close Button */}
     </div>
   );
 };

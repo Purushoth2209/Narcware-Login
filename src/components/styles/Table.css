@@ -7,7 +7,7 @@
 }
 
 .table-title {
-  color: #004D91;
+  color: #242437;
   margin-bottom: 1rem;
 }
 
@@ -23,7 +23,7 @@ th, td {
 }
 
 th {
-  background-color: #004D91;
+  background-color: #242437;
   color: #FFFFFF;
   position: relative;
 }
@@ -53,7 +53,7 @@ th {
 }
 
 .reorder-button {
-  background-color: #004D91;
+  background-color: #242437;
   color: #FFFFFF;
   padding: 0.5rem 1rem;
   border: none;

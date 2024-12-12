@@ -1,6 +1,6 @@
 /* Admin Login Header */
 .admin-login-header {
-    background-color: #004D91; /* Background color for the header */
+    background-color: #242437; /* Background color for the header */
     color: white; /* Text color */
     padding: 20px;
     text-align: center;
@@ -41,7 +41,7 @@
 /* Title for the login page */
 .admin-login-title {
     font-size: 30px;
-    color: #004D91;
+    color: #242437;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -70,7 +70,7 @@
 
 /* Login Button Specific Styles */
 .admin-login-button {
-    background-color: #004D91; /* Button background color */
+    background-color: #242437; /* Button background color */
     color: white; /* Text color */
     border: none; /* Remove default border */
     cursor: pointer; /* Change cursor to pointer on hover */
@@ -94,7 +94,7 @@
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 20px;
-    color: #004D91;
+    color: #242437;
     transition: color 0.3s ease; /* Smooth color transition on hover */
 }
 
@@ -105,7 +105,7 @@
 /* Font Awesome icon adjustments */
 .fas {
     font-size: 20px; /* Ensure the eye icon is the right size */
-    color: #004D91; /* Default color for the eye icon */
+    color: #242437; /* Default color for the eye icon */
     transition: color 0.3s ease; /* Smooth transition effect for color */
 }
 
@@ -118,7 +118,7 @@
     width: 40px;
     height: 40px;
     border: 4px solid #f3f3f3; /* Light grey background */
-    border-top: 4px solid #004D91; /* Blue color for the spinner */
+    border-top: 4px solid #242437; /* Blue color for the spinner */
     border-radius: 50%;
     animation: spin 2s linear infinite; /* Rotation animation */
     display: block;
@@ -139,7 +139,7 @@
     width: 40px;
     height: 40px;
     border: 4px solid #f3f3f3; /* Light grey background */
-    border-top: 4px solid #004D91; /* Blue color for the spinner */
+    border-top: 4px solid #242437; /* Blue color for the spinner */
     border-radius: 50%;
     animation: spin 2s linear infinite; /* Rotation animation */
 }
@@ -152,7 +152,7 @@
 
 /* Loading Text */
 .loading-text {
-    color: #004D91; /* Blue text color */
+    color: #242437; /* Blue text color */
     margin-top: 10px; /* Space between spinner and text */
     font-size: 16px;
     font-weight: bold;
@@ -175,6 +175,6 @@
 }
 
 .admin-login-forgotPassword {
-    color: #004D91;
+    color: #242437;
     cursor: pointer;
 }
